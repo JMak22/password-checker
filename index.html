@@ -29,7 +29,8 @@
 </head>
 <body>
   <h1>Password Strength Checker</h1>
-  <p>Try typing a password to see how long it would take for a computer to crack it.</p>
+  <p>This exercise is based on the zxcvbn password checking tool, which can be found on GitHub. The ingenuity is all theirs, I'm providing this frame and the interpretation for a non-technical audience.</p>
+  <p>Try typing a password to see how long it would take for a computer to crack it. No passwords will be saved anywhere -- you can verify that by looking at the source code of this page.</p>
   <label for="password">Enter a password:</label>
   <input type="text" id="password" placeholder="e.g., TrickyHorse$83">
   <div class="result" id="output">Start typing...</div>
@@ -48,15 +49,16 @@
       if (!input.value) {
         message = "Start typing...";
       } else if (score < 2) {
-        message = `⚠️ Weak: Estimated crack time is ${crackTime}. Try adding more length or symbols.`;
+        message = `⚠️ Weak: Oh no! An attacker could guess your password in ${crackTime}. It may be a very common password or a dictionary word. Try a group of unconnected words.`;
       } else if (score < 4) {
-        message = `🟡 Medium: Estimated crack time is ${crackTime}. You can make it even better.`;
+        message = `🟡 Medium: You can make it even better. Try adding a few unconnected words. It would take a strong attack ${crackTime} to guess your password.`;
       } else {
-        message = `✅ Strong: Estimated crack time is ${crackTime}. Great job!`;
+        message = `✅ Strong: Great job! The strongest attack would take ${crackTime} to guess your password.`;
       }
 
       output.textContent = message;
     });
   </script>
+  <p> The zxcvbn programmers were inspired by this xkcd comic:  <img src="https://imgs.xkcd.com/comics/password_strength.png" alt="xkcd webcomic about passwords and password strength"></p>
 </body>
 </html>
