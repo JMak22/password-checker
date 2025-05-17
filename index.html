@@ -46,6 +46,7 @@
       const result = zxcvbn(input.value);
       const crackTime = result.crack_times_display.offline_fast_hashing_1e10_per_second;
       const score = result.score;
+      const Sequence = result.sequence;
 
       let message = "";
 
@@ -58,12 +59,25 @@
       } else {
         message = `✅ Strong: Great job! The strongest attack would take ${crackTime} to guess your password.`;
       }
-
       output.textContent = message;
+
+      //Display breakdown of password components
+      let breakdown = "<h4> Password Pattern Breakdown:</h4><ul>";
+      sequence.forEach(part => {
+        const token = `<code>${part.token}</code>`;
+        const type = part.pattern;
+        const dictionary = part.dictionary_name ? ` (${part.dictionary_name} word)` : "";
+        breakdown += `<li>${token} → ${type}${dictionary}</li>`;
     });
+      breakdown += "</ul>";
+
+      //Show results
+      document.getElementById("result").innerHTML = message + "<br><br>" + breakdown;
   </script>
+  <p>Here's the sequence that zxcvbn based its guesses on:</p> 
   <p></p>
   <p></p>
-  <p> The zxcvbn programmers were inspired by this xkcd comic:  <img src="https://imgs.xkcd.com/comics/password_strength.png" alt="xkcd webcomic about passwords and password strength"></p>
+  <p> The zxcvbn programmers were inspired by this xkcd comic:</p>
+  <img src="https://imgs.xkcd.com/comics/password_strength.png" alt="xkcd webcomic about passwords and password strength">
 </body>
 </html>
