@@ -77,13 +77,13 @@
       output.innerHTML = message + "<br><br>" + breakdown;
     });
     
-      // Send value back to Storyline
-     function submitToStoryline() {
-       if (window.parent && window.parent.GetPlayer) {
-         const player = window.parent.GetPlayer();
-         player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
-       }
-     }
+    // Send value back to Storyline
+    function submitToStoryline() {
+      if (window.parent && window.parent.GetPlayer) {
+        const player = window.parent.GetPlayer();
+        player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
+      }
+    }
   </script>
   <p></p>
   <p></p>
