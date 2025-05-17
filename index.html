@@ -46,7 +46,7 @@
       const result = zxcvbn(input.value);
       const crackTime = result.crack_times_display.offline_fast_hashing_1e10_per_second;
       const score = result.score;
-      const Sequence = result.sequence;
+      const sequence = result.sequence;
 
       let message = "";
 
@@ -59,8 +59,7 @@
       } else {
         message = `✅ Strong: Great job! The strongest attack would take ${crackTime} to guess your password.`;
       }
-      output.textContent = message;
-
+      
       //Display breakdown of password components
       let breakdown = "<h4> Password Pattern Breakdown:</h4><ul>";
       sequence.forEach(part => {
@@ -72,7 +71,7 @@
       breakdown += "</ul>";
 
       //Show results
-      document.getElementById("result").innerHTML = message + "<br><br>" + breakdown;
+      output.innerHTML = message + "<br><br>" + breakdown;
   </script>
   <p>Here's the sequence that zxcvbn based its guesses on:</p> 
   <p></p>
