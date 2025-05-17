@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Strength Checker</title>
+  <script src="zxcvbn.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+      color: #333;
+      max-width: 600px;
+      margin: auto;
+    }
+    label, input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #eee;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Password Strength Checker</h1>
+  <p>Try typing a password to see how long it would take for a computer to crack it.</p>
+  <label for="password">Enter a password:</label>
+  <input type="text" id="password" placeholder="e.g., TrickyHorse$83">
+  <div class="result" id="output">Start typing...</div>
+
+  <script>
+    const input = document.getElementById("password");
+    const output = document.getElementById("output");
+
+    input.addEventListener("input", () => {
+      const result = zxcvbn(input.value);
+      const crackTime = result.crack_times_display.offline_fast_hashing_1e10_per_second;
+      const score = result.score;
+
+      let message = "";
+
+      if (!input.value) {
+        message = "Start typing...";
+      } else if (score < 2) {
+        message = `⚠️ Weak: Estimated crack time is ${crackTime}. Try adding more length or symbols.`;
+      } else if (score < 4) {
+        message = `🟡 Medium: Estimated crack time is ${crackTime}. You can make it even better.`;
+      } else {
+        message = `✅ Strong: Estimated crack time is ${crackTime}. Great job!`;
+      }
+
+      output.textContent = message;
+    });
+  </script>
+</body>
+</html>
