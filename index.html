@@ -72,16 +72,16 @@
 
       //Show results
       output.innerHTML = message + "<br><br>" + breakdown;
-    });   
+     
+      // Send value back to Storyline
+      function submitToStoryline() {
+        if (window.parent && window.parent.GetPlayer) {
+          const player = window.parent.GetPlayer();
+          player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
+        }
+    });
   </script>
 <button onclick="submitToStoryline()">Submit your password strength</button>
-// Send value back to Storyline
-function submitToStoryline() {
-  if (window.parent && window.parent.GetPlayer) {
-    const player = window.parent.GetPlayer();
-    player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
-  }
-}
   <p></p>
   <p></p>
   <p> The zxcvbn programmers were inspired by this xkcd comic:</p>
