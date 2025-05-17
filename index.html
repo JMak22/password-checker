@@ -74,11 +74,13 @@
       output.innerHTML = message + "<br><br>" + breakdown;
     });   
   </script>
+<button onclick="submitToStoryline()">Submit your password strength</button>
 // Send value back to Storyline
-  
-if (window.parent && window.parent.SetPlayer) {
-  const player = window.parent.GetPlayer();
-  player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
+function submitToStoryline() {
+  if (window.parent && window.parent.GetPlayer) {
+    const player = window.parent.GetPlayer();
+    player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
+  }
 }
   <p></p>
   <p></p>
