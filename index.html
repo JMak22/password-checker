@@ -53,9 +53,9 @@
       if (!input.value) {
         message = "Start typing...";
       } else if (score < 2) {
-        message = `⚠️ Oh no! An attacker could guess your password in ${crackTime}. It may be a very common password or a dictionary word. Try a group of unconnected words.`;
+        message = `⚠️ Oh no! An attacker could guess your password in ${crackTime}. It may be a very common password, typing pattern or a dictionary word. Try a group of unconnected words.`;
       } else if (score < 4) {
-        message = `🟡 Medium: It would take a strong attack ${crackTime} to guess your password. You can make it even better. Try adding a few unconnected words.`;
+        message = `🟡 Medium: It would take a strong attack ${crackTime} to guess your password. You can make it even better. Try adding a few unrelated words.`;
       } else {
         message = `✅ Strong: Great job! The strongest attack would take ${crackTime} to guess your password.`;
       }
