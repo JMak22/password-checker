@@ -31,15 +31,16 @@
   </style>
 </head>
 <body>
-  <h1>Password Strength Checker</h1>
-  <p>This exercise is based on the zxcvbn password checking tool, which can be found on GitHub. The ingenuity is all theirs, I'm providing this frame and the interpretation for a non-technical audience.</p>
-  <p>Try typing a password to see how long it would take for a computer to crack it. No passwords will be saved anywhere -- you can verify that by looking at the source code of this page.</p>
-  <label for="password">Enter a password:</label>
+  <img src="assets/CyberCircuit_logo_square.svg" alt="Shield shaped logo featuring a stylized circuit patterns in the background and the text Cyber Circuit Defense League" width="137" height="137" style="float:right">
+  <h1>Preventing ID Fraud: </h1>
+  <h2>Password Strength Checker</h2>
+  <p>This tool is best for passwords you absolutely have to remember. A password generator and keeper is best for situations when you don't.</p>
+  <label for="password">Type a password and let's see how strong it is!</label>
   <input type="text" id="password" placeholder="e.g., TrickyHorse$83">
   <div class="result" id="output">Start typing...</div>
-  <button onclick="submitToStoryline()">Submit your password strength</button>
+  <button onclick="submitToStoryline()">Submit</button>
 
-  <script>
+  <script> // Add in the other 4 levels of comments and translate them to terminology non-experts can understand
     const input = document.getElementById("password");
     const output = document.getElementById("output");
     let currentScore = 0;
@@ -53,16 +54,36 @@
 
       let message = "";
 
+      // Check if the input field is empty and display a default message
       if (!input.value) {
-        message = "Start typing...";
-      } else if (score < 2) {
-        message = `⚠️ Oh no! An attacker could guess your password in ${crackTime}. It may be a very common password, typing pattern or a dictionary word. Try a group of unconnected words.`;
-      } else if (score < 4) {
-        message = `🟡 Medium: It would take a strong attack ${crackTime} to guess your password. You can make it even better. Try adding a few unrelated words.`;
+         message = "Start typing...";
       } else {
-        message = `✅ Strong: Great job! The strongest attack would take ${crackTime} to guess your password.`;
-      }
-      
+         // Collect all crack time estimates
+         const times = result.crack_times_display;
+         const timeEstimates = `
+           <h4>Estimated Time to Crack Your Password:</h4>
+           <ul>
+             <li>Basic attack (no guess rate limiting) (10 guesses/sec): 
+               <strong>${times.online_no_throttling_10_per_second}</strong>
+             </li>
+             <li>Rate limited attack (100 guesses/hr): 
+               <strong>${times.online_throttling_100_per_hour}</strong>
+             </li>
+             <li>Advanced attack (10k guesses/sec): 
+               <strong>${times.offline_slow_hashing_1e4_per_second}</strong>
+             </li>
+             <li>Supercomputer-level attack (10B guesses/sec): 
+               <strong>${times.offline_fast_hashing_1e10_per_second}</strong>
+             </li>
+           </ul>
+         `;
+      // Extract and display warnings and suggestions provided by the password strength checker
+      const feedback = result.feedback;
+      const warning = feedback.warning ? `<p>⚠️ Warning: ${feedback.warning}</p>` : "";
+      const suggestions = feedback.suggestions.length
+          ? `<ul>${feedback.suggestions.map(s => `<li>💡 ${s}</li>`).join("")}</ul>`
+          : "";
+
       //Display breakdown of password components
       let breakdown = "<h4> Password Pattern Breakdown:</h4><ul>";
       sequence.forEach(part => {
@@ -74,20 +95,22 @@
       breakdown += "</ul>";
 
       //Show results
-      output.innerHTML = message + "<br><br>" + breakdown;
+      message = `<p>${score < 2 ? "⚠️ Weak password." : (score < 4 ? "🟡 Medium strength." : "✅ Strong password! Save it in a password keeper.")}</p>` + warning + suggestions + timeEstimates;
+      output.innerHTML = message + breakdown;
+        }
     });
     
     // Send value back to Storyline
     function submitToStoryline() {
       if (window.parent && window.parent.GetPlayer) {
         const player = window.parent.GetPlayer();
-        player.SetVar("PasswordStrength", score >= 4 ? "Strong" : (score >= 2 ? "Medium" : "Weak"));
+        player.SetVar("PasswordStrength", currentScore >= 4 ? "Strong" : (currentScore >= 2 ? "Medium" : "Weak"));
       }
     }
   </script>
+  <p>This exercise is based on the <a href="https://lowe.github.io/tryzxcvbn/">zxcvbn </a>password checking tool. You can do a deep dive through their documentation if you are curious.</p>
   <p></p>
-  <p></p>
-  <p> The zxcvbn programmers were inspired by this xkcd comic:</p>
-  <img src="https://imgs.xkcd.com/comics/password_strength.png" alt="xkcd webcomic about passwords and password strength">
+  <p> The programmer(s?) were inspired by this xkcd comic:</p>
+  <img src="https://imgs.xkcd.com/comics/password_strength.png" alt="Frpom the comic author: To anyone who understands information theory and security and is in an infuriating argument with someone who does not (possibly involving mixed case), I sincerely apologize.">
 </body>
 </html>
